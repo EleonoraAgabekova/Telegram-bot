@@ -1,0 +1,247 @@
+import telebot
+from telebot import types
+import pandas as pd
+import random
+
+bot = telebot.TeleBot('5390057507:AAEyAVuG1ZyyEqBDiQPsi-MrsJMAahlQJX8')
+# инициализируем бота
+
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton("Начать")
+    markup.add(btn1)
+    bot.send_message(message.chat.id,
+                     text="Привет, {0.first_name}! готов начать?".format(
+                         message.from_user), reply_markup=markup)
+
+
+@bot.message_handler(content_types=['text'])
+def func(message):
+
+
+
+    # после нажатия кнопки начать
+    if (message.text == "Начать"):
+
+        bot.send_message(message.chat.id, text="Отлично! А какой цвет у тебя волос?")
+
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("Белые")
+        btn2 = types.KeyboardButton("Черные")
+        back = types.KeyboardButton("Блонд")
+        markup.add(btn1, btn2, back)
+        bot.send_message(message.chat.id, text="Ответь на вопрос", reply_markup=markup)
+
+
+    # если белые
+    elif (message.text == "Белые"):
+        bot.send_message(message.chat.id, "Хорошо, спасибо, а какой цвет? Темные или светлые?")
+
+        hair = message.text
+        print(hair)
+
+        file = open("./local/hair.txt", "w")
+        file.write(hair + '\n')
+
+
+
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("Темные")
+        btn2 = types.KeyboardButton("Светлые")
+        markup.add(btn1, btn2)
+        bot.send_message(message.chat.id, text="Ответь на вопрос", reply_markup=markup)
+
+
+    # если черные
+    elif message.text == "Черные":
+        bot.send_message(message.chat.id, "Хорошо, спасибо")
+        hair = message.text
+        print(hair)
+
+        file = open("./local/hair.txt", "w")
+        file.write(hair + '\n')
+
+
+
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("Темные")
+        btn2 = types.KeyboardButton("Светлые")
+        markup.add(btn1, btn2)
+        bot.send_message(message.chat.id, text="Ответь на вопрос", reply_markup=markup)
+
+
+    # если блонд
+    elif message.text == "Блонд":
+        bot.send_message(message.chat.id, "Хорошо, спасибо")
+        hair = message.text
+        print(hair)
+
+        file = open("./local/hair.txt", "w")
+        file.write(hair + '\n')
+
+
+
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("Темные")
+        btn2 = types.KeyboardButton("Светлые")
+        markup.add(btn1, btn2)
+        bot.send_message(message.chat.id, text="Ответь на вопрос", reply_markup=markup)
+
+
+
+    # темные глаза
+    elif message.text == "Темные":
+        bot.send_message(message.chat.id, "Хорошо, спасибо, а ты из РФ?")
+
+
+        file = open("./local/eye.txt", "w")
+        file.write(message.text + '\n')
+
+
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("Да")
+        btn2 = types.KeyboardButton("Нет")
+        markup.add(btn1, btn2)
+        bot.send_message(message.chat.id, text="Ответь на вопрос", reply_markup=markup)
+
+
+    # Светлые глаза
+    elif message.text == "Светлые":
+        bot.send_message(message.chat.id, "Хорошо, спасибо, а ты из РФ?")
+
+        file = open("./local/eye.txt", "w")
+        file.write(message.text + '\n')
+
+
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton("Да")
+        btn2 = types.KeyboardButton("Нет")
+        markup.add(btn1, btn2)
+        bot.send_message(message.chat.id, text="Ответь на вопрос", reply_markup=markup)
+
+
+    elif message.text == "Да":
+        bot.send_message(message.chat.id, text="Готовлю твой результат....",  reply_markup=types.ReplyKeyboardRemove())
+
+        file = open("local/co.txt", "w")
+        file.write(message.text + '\n')
+
+        #read
+        f = open('./local/eye.txt')
+        f2 = open('./local/hair.txt')
+        f3 = open('./local/co.txt')
+
+        final_eye = f.read()
+        final_hair = f2.read()
+
+        print(final_eye, final_hair)
+
+        titanic_data = pd.read_csv('./DB/DB.csv')
+        titanic_data.head()
+
+
+        if final_hair == "Белые":
+            print("finding white had")
+            photo = open('./DB/girl/white.png', 'rb')
+            tb.send_photo(message.chat.id, photo)
+            tb.send_photo(message.chat.id, "FILEID")
+
+        elif final_hair == "Черные":
+            print("finding black had")
+
+            photo = open('./DB/girl/black.png', 'rb')
+            tb.send_photo(message.chat.id, photo)
+            tb.send_photo(message.chat.id, "FILEID")
+        elif final_hair == "Блонд":
+            print("finding blond had")
+            photo = open('./DB/girl/blond.png', 'rb')
+            tb.send_photo(message.chat.id, photo)
+            tb.send_photo(message.chat.id, "FILEID")
+        else:
+            if final_eye == "Светлые":
+                print("finding light color")
+                photo = open('./DB/girl/black-light.png', 'rb')
+                tb.send_photo(message.chat.id, photo)
+                tb.send_photo(message.chat.id, "FILEID")
+            elif final_eye == "black":
+                print("finding black color")
+
+
+                photo = open('./DB/girl/black.png', 'rb')
+                tb.send_photo(message.chat.id, photo)
+                tb.send_photo(message.chat.id, "FILEID")
+            else:
+                girl = ["./DB/girl/black.png", "./DB/girl/black-light.png", "./DB/girl/blond.png", "./DB/girl/white.png"]
+                final_girl = random.choice(girl)
+
+                photo = open(final_girl, 'rb')
+                bot.send_photo(message.chat.id, photo)
+
+
+
+    elif message.text == "Нет":
+        bot.send_message(message.chat.id, text="Готовлю твой результат....", reply_markup=types.ReplyKeyboardRemove())
+
+        file = open("local/co.txt", "w")
+        file.write(message.text + '\n')
+
+
+        #read
+        f = open('./local/eye.txt')
+        f2 = open('./local/hair.txt')
+        f3 = open('./local/co.txt')
+
+        final_eye = f.read()
+        final_hair = f2.read()
+
+        print(final_eye, final_hair)
+
+        titanic_data = pd.read_csv('./DB/DB.csv')
+        titanic_data.head()
+
+
+        if final_hair == "Белые":
+            print("finding white had")
+            photo = open('./DB/girl/white.png', 'rb')
+            tb.send_photo(message.chat.id, photo)
+            tb.send_photo(message.chat.id, "FILEID")
+
+        elif final_hair == "Черные":
+            print("finding black had")
+
+            photo = open('./DB/girl/black.png', 'rb')
+            tb.send_photo(message.chat.id, photo)
+            tb.send_photo(message.chat.id, "FILEID")
+        elif final_hair == "Блонд":
+            print("finding blond had")
+            photo = open('./DB/girl/blond.png', 'rb')
+            tb.send_photo(message.chat.id, photo)
+            tb.send_photo(message.chat.id, "FILEID")
+        else:
+            if final_eye == "Светлые":
+                print("finding light color")
+                photo = open('./DB/girl/black-light.png', 'rb')
+                tb.send_photo(message.chat.id, photo)
+                tb.send_photo(message.chat.id, "FILEID")
+            elif final_eye == "black":
+                print("finding black color")
+
+
+                photo = open('./DB/girl/black.png', 'rb')
+                tb.send_photo(message.chat.id, photo)
+                tb.send_photo(message.chat.id, "FILEID")
+            else:
+                girl = ["./DB/girl/black.png", "./DB/girl/black-light.png", "./DB/girl/blond.png", "./DB/girl/white.png"]
+                final_girl = random.choice(girl)
+
+                photo = open(final_girl, 'rb')
+                bot.send_photo(message.chat.id, photo)
+
+
+    else:
+        bot.send_message(message.chat.id, text="Хорошо, спасибо")
+
+
+bot.polling(none_stop=True)
